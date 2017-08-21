@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
                 "EzYlJoOnpYuBwd7plPNDXU06z04SJ8y7RN/Ceoc6mPY=",
                 "7I/W4NGRhh/0crglPVYXuJZgHPFQo7wiAVv/aygWKrIpfMRqxfQHlNLUx4VLapvIlT3Sawy5Ie17vj+KUREkZQ==",
                 getApplicationContext()
-        );
+        )
     }
 
 }
