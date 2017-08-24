@@ -60,6 +60,21 @@ class MainActivity : AppCompatActivity() {
             )
         }
 
+        this.setNavButton.setOnClickListener {
+            Manager.getInstance().telematics.sendCommand(Command.NaviDestination.setDestination(52.5091992f, 13.3881374f, "Acasa"),
+                    SerialHolder.serial,
+                    object : CommandCallback {
+                        override fun onCommandResponse(response: ByteArray?) {
+
+                        }
+
+                        override fun onCommandFailed(error: TelematicsError?) {
+                            Log.e("Telematics", error!!.message)
+                        }
+                    }
+            )
+        }
+
         Manager.getInstance().initialize(
                 "dGVzdApE/1TBmAxLG7ndHPe9QkJlws2llGkwdxqczmxWj0ELHHNYwHgaVggoTIF3DqDSOk/mPYa/SE4qNHbBt5vgQZgaat/iG7m9GnPv6PVvUEk/bTOEt1QCBL7QNLg4ao0ilmy3N3QjWD0RU+tIsNAW1aOtXMzWFpfMcTS7iSe/6Pd137AdIQ1MW7OwqLGnw7TmF0ozBmiV",
                 "EzYlJoOnpYuBwd7plPNDXU06z04SJ8y7RN/Ceoc6mPY=",

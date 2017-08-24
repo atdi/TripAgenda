@@ -29,6 +29,12 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/openCarButton"
             android:text="Close" />
+        <Button
+            android:id="@+id/setNavButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/lockCarButton"
+            android:text="Set Destination" />
     </android.support.design.widget.AppBarLayout>
 
     <include layout="@layout/content_main"
