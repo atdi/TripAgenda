@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="eu.aagsolutions.tripagenda.AgendaActivity">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:layout_margin="0dp"
+
+        android:background="@color/colorPrimary"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="4"
+            android:background="@color/colorPrimary"
+            android:src="@drawable/ic_place_white_24dp"
+            android:gravity="left"/>
+
+        <AutoCompleteTextView
+            android:id="@+id/destinationAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="4"
+            android:hint="Destination"
+            android:textColor="@android:color/white"
+            android:textColorHint="@android:color/white"
+            android:textColorLink="@android:color/white"
+            android:textCursorDrawable="@null"
+            />
+
+        <EditText
+            android:id="@+id/arrivalTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:inputType="time"
+            android:layout_gravity="center"
+            />
+
+        <ImageButton
+            android:id="@+id/addStop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="2"
+            android:background="@color/colorPrimary"
+            android:src="@drawable/ic_more_vert_white_24dp"
+            android:gravity="right"/>
+    </LinearLayout>
+</RelativeLayout>
