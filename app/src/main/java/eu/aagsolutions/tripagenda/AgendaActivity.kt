@@ -3,20 +3,52 @@ package eu.aagsolutions.tripagenda
 import android.app.DatePickerDialog
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
+import android.widget.AdapterView
+import android.widget.AutoCompleteTextView
 import android.widget.ImageButton
 import android.widget.LinearLayout
+import android.widget.Toast
+import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.api.GoogleApiClient
+import com.google.android.gms.location.places.Places
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.LatLngBounds
+import eu.aagsolutions.tripagenda.adapters.PlaceArrayAdapter
 import kotlinx.android.synthetic.main.activity_agenda.addStop
 import kotlinx.android.synthetic.main.activity_agenda.btnDate
 import java.util.Calendar
 
-class AgendaActivity : AppCompatActivity() {
+class AgendaActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFailedListener,
+        GoogleApiClient.ConnectionCallbacks {
+
+    private val LOG_TAG = "AgendaActivity"
 
     private val startCalendar = Calendar.getInstance()
 
     private val startDateString = StringBuilder()
 
+    private val GOOGLE_API_CLIENT_ID = 0
+
+    private val BOUNDS_BERLIN = LatLngBounds(
+            LatLng(52.373688, 13.700091), LatLng(52.708610, 13.050524))
+
+    private var mLocAutocomplete: PlaceArrayAdapter? = null
+
+    private var mGoogleApiClient: GoogleApiClient? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Init maps
+        mGoogleApiClient = GoogleApiClient.Builder(this@AgendaActivity)
+                .addApi(Places.GEO_DATA_API)
+                .enableAutoManage(this, GOOGLE_API_CLIENT_ID, this)
+                .addConnectionCallbacks(this)
+                .build()
+        mLocAutocomplete = PlaceArrayAdapter(this, android.R.layout.simple_list_item_1,
+                BOUNDS_BERLIN, null)
+
         setContentView(R.layout.activity_agenda)
 
         val c = Calendar.getInstance()
@@ -55,7 +87,38 @@ class AgendaActivity : AppCompatActivity() {
             removeButton.setOnClickListener {
                 myLayout.removeView(hiddenInfo)
             }
+            val autocompleteText = hiddenInfo.findViewWithTag<AutoCompleteTextView>("Destination")
+            setupAutocompleteTextView(autocompleteText, null, mLocAutocomplete)
+
         }
 
+    }
+
+    private fun setupAutocompleteTextView(addressTextView: AutoCompleteTextView,
+                                          autoCompleteClickListener: AdapterView.OnItemClickListener?,
+                                          locAutoComplete: PlaceArrayAdapter?) {
+        addressTextView.threshold = 3
+        //addressTextView.setOnItemClickListener(autoCompleteClickListener)
+        addressTextView.setAdapter(locAutoComplete)
+    }
+
+    override fun onConnectionFailed(connectionResult: ConnectionResult) {
+        Log.e(LOG_TAG, "Google Places API connection failed with error code: "
+                + connectionResult.getErrorCode())
+
+        Toast.makeText(this,
+                "Google Places API connection failed with error code:" +
+                        connectionResult.getErrorCode(),
+                Toast.LENGTH_LONG).show()
+    }
+
+    override fun onConnected(p0: Bundle?) {
+        mLocAutocomplete!!.setGoogleApiClient(mGoogleApiClient)
+        Log.i(LOG_TAG, "Google Places API connected.")
+    }
+
+    override fun onConnectionSuspended(p0: Int) {
+        mLocAutocomplete!!.setGoogleApiClient(null);
+        Log.e(LOG_TAG, "Google Places API connection suspended.")
     }
 }
