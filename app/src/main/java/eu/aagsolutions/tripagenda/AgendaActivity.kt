@@ -3,6 +3,9 @@ package eu.aagsolutions.tripagenda
 import android.app.DatePickerDialog
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
+import android.widget.LinearLayout
 import kotlinx.android.synthetic.main.activity_agenda.*
 import java.util.*
 
@@ -11,6 +14,10 @@ class AgendaActivity : AppCompatActivity() {
     private val startCalendar = Calendar.getInstance()
 
     private val startDateString = StringBuilder()
+
+    private val arrayList = ArrayList<LinearLayout>()
+
+    private var adapter: ArrayAdapter<LinearLayout>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,7 +31,8 @@ class AgendaActivity : AppCompatActivity() {
         val year = c.get(Calendar.YEAR)
         startCalendar.set(year, month, day, hour, minute)
         startDateString.append(day).append("/").append(month).append("/").append(year)
-
+        adapter = ArrayAdapter(applicationContext, android.R.layout.simple_spinner_item, arrayList)
+        this.stopPoints.adapter = adapter
         this.btnDate.text = startDateString.toString()
 
         this.btnDate.setOnClickListener {
@@ -42,6 +50,18 @@ class AgendaActivity : AppCompatActivity() {
                         btnDate.text = startDateString.toString()},
                     year, month, day)
             datePickerDialog.show()
+        }
+
+        this.addStop.setOnClickListener {
+            val addedLayout: LinearLayout = findViewById(R.id.linearLayoutStopPoint) as LinearLayout
+            addedLayout.orientation = LinearLayout.HORIZONTAL
+            addedLayout.layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    50)
+            //val destination = AutoCompleteTextView(applicationContext)
+            //addedLayout.addView(destination)
+            arrayList.add(addedLayout)
+            adapter!!.notifyDataSetChanged()
         }
 
     }

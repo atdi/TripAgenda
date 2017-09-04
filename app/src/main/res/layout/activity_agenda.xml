@@ -7,6 +7,7 @@
     tools:context="eu.aagsolutions.tripagenda.AgendaActivity">
 
     <LinearLayout
+        android:id="@+id/mainLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -81,5 +82,10 @@
                 android:gravity="right"
                 android:src="@drawable/ic_more_vert_white_24dp" />
         </LinearLayout>
+        <ListView
+            android:id="@+id/stopPoints"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="4" />
     </LinearLayout>
 </RelativeLayout>
