@@ -18,6 +18,8 @@ import java.util.concurrent.TimeUnit
  */
 class PlaceArrayAdapter(context: Context, resource: Int, private val mBounds: LatLngBounds,
                         private var mPlaceFilter: AutocompleteFilter?) : ArrayAdapter<PlaceArrayAdapter.PlaceAutocomplete>(context, resource), Filterable {
+
+    private val TAG = "PlaceArrayAdapter"
     private var mGoogleApiClient: GoogleApiClient? = null
     private var mResultList: ArrayList<PlaceAutocomplete>? = null
 
@@ -109,8 +111,4 @@ class PlaceArrayAdapter(context: Context, resource: Int, private val mBounds: La
         }
     }
 
-    companion object {
-
-        private val TAG = "PlaceArrayAdapter"
-    }
 }

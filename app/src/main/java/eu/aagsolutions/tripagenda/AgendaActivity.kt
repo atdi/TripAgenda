@@ -88,17 +88,15 @@ class AgendaActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFailedLi
                 myLayout.removeView(hiddenInfo)
             }
             val autocompleteText = hiddenInfo.findViewWithTag<AutoCompleteTextView>("Destination")
-            setupAutocompleteTextView(autocompleteText, null, mLocAutocomplete)
+            setupAutocompleteTextView(autocompleteText, mLocAutocomplete)
 
         }
 
     }
 
     private fun setupAutocompleteTextView(addressTextView: AutoCompleteTextView,
-                                          autoCompleteClickListener: AdapterView.OnItemClickListener?,
                                           locAutoComplete: PlaceArrayAdapter?) {
         addressTextView.threshold = 3
-        //addressTextView.setOnItemClickListener(autoCompleteClickListener)
         addressTextView.setAdapter(locAutoComplete)
     }
 
