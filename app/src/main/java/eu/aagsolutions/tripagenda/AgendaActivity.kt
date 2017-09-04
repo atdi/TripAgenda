@@ -3,6 +3,7 @@ package eu.aagsolutions.tripagenda
 import android.app.DatePickerDialog
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.widget.ImageButton
 import android.widget.LinearLayout
 import kotlinx.android.synthetic.main.activity_agenda.addStop
 import kotlinx.android.synthetic.main.activity_agenda.btnDate
@@ -50,17 +51,10 @@ class AgendaActivity : AppCompatActivity() {
             val myLayout = findViewById(R.id.mainLayout) as LinearLayout
             val hiddenInfo: LinearLayout = layoutInflater.inflate(R.layout.hidden, myLayout, false) as LinearLayout
             myLayout.addView(hiddenInfo)
-
-            //val addedLayout: LinearLayout = findViewById(R.id.linearLayoutStopPoint) as LinearLayout
-            // = LinearLayout(applicationContext)
-            //addedLayout.orientation = LinearLayout.HORIZONTAL
-            //addedLayout.layoutParams = LinearLayout.LayoutParams(
-            //        LinearLayout.LayoutParams.MATCH_PARENT,
-            //        50)
-            //val destination = AutoCompleteTextView(applicationContext)
-            //addedLayout.addView(destination)
-            //arrayList.add(hiddenInfo)
-            //adapter!!.notifyDataSetChanged()
+            val removeButton = hiddenInfo.findViewWithTag<ImageButton>("Delete")
+            removeButton.setOnClickListener {
+                myLayout.removeView(hiddenInfo)
+            }
         }
 
     }
