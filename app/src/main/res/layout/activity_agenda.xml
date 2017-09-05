@@ -83,4 +83,12 @@
                 android:src="@drawable/ic_more_vert_white_24dp" />
         </LinearLayout>
     </LinearLayout>
+
+    <Button
+        android:id="@+id/collectDestinations"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/mainLayout"
+        android:layout_marginTop="-50dp"
+        android:text="Button"/>
 </RelativeLayout>

@@ -4,7 +4,6 @@ import android.app.DatePickerDialog
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
-import android.widget.AdapterView
 import android.widget.AutoCompleteTextView
 import android.widget.ImageButton
 import android.widget.LinearLayout
@@ -15,10 +14,16 @@ import com.google.android.gms.location.places.Places
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import eu.aagsolutions.tripagenda.adapters.PlaceArrayAdapter
+import eu.aagsolutions.tripagenda.model.Event
+import eu.aagsolutions.tripagenda.model.GeoLocation
 import kotlinx.android.synthetic.main.activity_agenda.addStop
 import kotlinx.android.synthetic.main.activity_agenda.btnDate
 import kotlinx.android.synthetic.main.activity_agenda.mainLayout
+import java.math.BigDecimal
 import java.util.Calendar
+import java.util.Date
+import java.util.HashSet
+
 
 class AgendaActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFailedListener,
         GoogleApiClient.ConnectionCallbacks {
@@ -38,7 +43,7 @@ class AgendaActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFailedLi
 
     private var mGoogleApiClient: GoogleApiClient? = null
 
-    private val locations = HashSet<String>()
+    private val locations = HashSet<LinearLayout>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -86,12 +91,12 @@ class AgendaActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFailedLi
             val hiddenInfo: LinearLayout = layoutInflater.inflate(R.layout.hidden, mainLayout, false) as LinearLayout
             mainLayout.addView(hiddenInfo)
             val removeButton = hiddenInfo.findViewWithTag<ImageButton>("Delete")
+            val autocompleteText = hiddenInfo.findViewWithTag<AutoCompleteTextView>("Destination")
+            setupAutocompleteTextView(autocompleteText, mLocAutocomplete)
             removeButton.setOnClickListener {
                 mainLayout.removeView(hiddenInfo)
             }
-            val autocompleteText = hiddenInfo.findViewWithTag<AutoCompleteTextView>("Destination")
-            setupAutocompleteTextView(autocompleteText, mLocAutocomplete)
-
+            locations.add(hiddenInfo)
         }
 
     }
@@ -123,7 +128,8 @@ class AgendaActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFailedLi
     }
 
     private fun collectDestinations() {
-        val destinations = mainLayout.findViewWithTag<AutoCompleteTextView>("Destination")
+        val agenda: List<Event> = locations.map { l -> Event(GeoLocation("", BigDecimal(10), BigDecimal(10)), Date(), 10)}
+
     }
 
 }

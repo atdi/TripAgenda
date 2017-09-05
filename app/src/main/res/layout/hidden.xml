@@ -35,7 +35,9 @@
         android:inputType="time"
         android:textColor="@android:color/white"
         android:textColorHint="@android:color/white"
-        android:textColorLink="@android:color/white" />
+        android:textColorLink="@android:color/white"
+        android:tag="Time"
+        />
 
 
     <EditText
@@ -46,7 +48,9 @@
         android:inputType="number"
         android:textColor="@android:color/white"
         android:textColorHint="@android:color/white"
-        android:textColorLink="@android:color/white" />
+        android:textColorLink="@android:color/white"
+        android:tag="Duration"
+        />
 
     <ImageButton
         android:layout_width="wrap_content"
