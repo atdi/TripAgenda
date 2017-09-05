@@ -17,6 +17,7 @@ import com.google.android.gms.maps.model.LatLngBounds
 import eu.aagsolutions.tripagenda.adapters.PlaceArrayAdapter
 import kotlinx.android.synthetic.main.activity_agenda.addStop
 import kotlinx.android.synthetic.main.activity_agenda.btnDate
+import kotlinx.android.synthetic.main.activity_agenda.mainLayout
 import java.util.Calendar
 
 class AgendaActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFailedListener,
@@ -36,6 +37,8 @@ class AgendaActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFailedLi
     private var mLocAutocomplete: PlaceArrayAdapter? = null
 
     private var mGoogleApiClient: GoogleApiClient? = null
+
+    private val locations = HashSet<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,12 +83,11 @@ class AgendaActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFailedLi
         }
 
         this.addStop.setOnClickListener {
-            val myLayout = findViewById(R.id.mainLayout) as LinearLayout
-            val hiddenInfo: LinearLayout = layoutInflater.inflate(R.layout.hidden, myLayout, false) as LinearLayout
-            myLayout.addView(hiddenInfo)
+            val hiddenInfo: LinearLayout = layoutInflater.inflate(R.layout.hidden, mainLayout, false) as LinearLayout
+            mainLayout.addView(hiddenInfo)
             val removeButton = hiddenInfo.findViewWithTag<ImageButton>("Delete")
             removeButton.setOnClickListener {
-                myLayout.removeView(hiddenInfo)
+                mainLayout.removeView(hiddenInfo)
             }
             val autocompleteText = hiddenInfo.findViewWithTag<AutoCompleteTextView>("Destination")
             setupAutocompleteTextView(autocompleteText, mLocAutocomplete)
@@ -119,4 +121,9 @@ class AgendaActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFailedLi
         mLocAutocomplete!!.setGoogleApiClient(null);
         Log.e(LOG_TAG, "Google Places API connection suspended.")
     }
+
+    private fun collectDestinations() {
+        val destinations = mainLayout.findViewWithTag<AutoCompleteTextView>("Destination")
+    }
+
 }
