@@ -6,4 +6,4 @@ import java.util.Date
 /**
  * Created by avramesc on 8/25/17.
  */
-class Event(val location: GeoLocation, val startDateTime: Date, val duration: Int)
+class Event(val point: GeoPoint, val startDateTime: Date, val duration: Int)

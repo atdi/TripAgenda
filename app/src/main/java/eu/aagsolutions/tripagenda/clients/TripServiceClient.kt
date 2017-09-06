@@ -1,18 +1,32 @@
 package eu.aagsolutions.tripagenda.clients
 
-import eu.aagsolutions.tripagenda.model.GeoLocation
+import eu.aagsolutions.tripagenda.model.GeoPoint
+import eu.aagsolutions.tripagenda.model.Trip
 import retrofit2.Call
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
+import retrofit2.http.Query
 
 /**
  * Created by avramesc on 9/5/17.
  */
 interface TripServiceClient {
 
-    @POST("geodata")
+    @POST("geo/coding")
     fun buildGeoData(@Header("X-Tenant-Name") tenantId: String,
                   @Header("X-Tenant-Key") tenantKey: String,
-                  @Body routeRequest: Set<GeoLocation>): Call<Set<GeoLocation>>
+                  @Body geoPoints: Set<GeoPoint>): Call<Set<GeoPoint>>
+
+    @POST("geo/coding/trip")
+    fun buildGeoData(@Header("X-Tenant-Name") tenantId: String,
+                     @Header("X-Tenant-Key") tenantKey: String,
+                     @Body trip: Trip): Call<Trip>
+
+    @GET("geo/coding")
+    fun buildGeoData(@Header("X-Tenant-Name") tenantId: String,
+                     @Header("X-Tenant-Key") tenantKey: String,
+                     @Query("address") address: String): Call<GeoPoint>
+
 }

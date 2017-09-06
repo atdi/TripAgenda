@@ -5,13 +5,13 @@ import java.math.BigDecimal
 /**
  * Created by avramesc on 8/25/17.
  */
-class GeoLocation(val address: String, val lon: BigDecimal, val lat: BigDecimal) {
+class GeoPoint(val address: String, val lon: BigDecimal, val lat: BigDecimal) {
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
-        other as GeoLocation
+        other as GeoPoint
 
         if (address != other.address) return false
 

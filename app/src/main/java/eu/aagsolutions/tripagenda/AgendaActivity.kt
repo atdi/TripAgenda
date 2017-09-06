@@ -13,16 +13,22 @@ import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.places.Places
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
+import com.google.gson.GsonBuilder
 import eu.aagsolutions.tripagenda.adapters.PlaceArrayAdapter
+import eu.aagsolutions.tripagenda.clients.TripServiceClient
 import eu.aagsolutions.tripagenda.model.Event
-import eu.aagsolutions.tripagenda.model.GeoLocation
+import eu.aagsolutions.tripagenda.model.GeoPoint
 import kotlinx.android.synthetic.main.activity_agenda.addStop
 import kotlinx.android.synthetic.main.activity_agenda.btnDate
 import kotlinx.android.synthetic.main.activity_agenda.mainLayout
+import okhttp3.OkHttpClient
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import java.math.BigDecimal
 import java.util.Calendar
 import java.util.Date
 import java.util.HashSet
+import java.util.concurrent.TimeUnit
 
 
 class AgendaActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFailedListener,
@@ -45,9 +51,12 @@ class AgendaActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFailedLi
 
     private val locations = HashSet<LinearLayout>()
 
+    private var tripServiceClient: TripServiceClient? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        initTripServiceClient()
         // Init maps
         mGoogleApiClient = GoogleApiClient.Builder(this@AgendaActivity)
                 .addApi(Places.GEO_DATA_API)
@@ -128,8 +137,23 @@ class AgendaActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFailedLi
     }
 
     private fun collectDestinations() {
-        val agenda: List<Event> = locations.map { l -> Event(GeoLocation("", BigDecimal(10), BigDecimal(10)), Date(), 10)}
+        val agenda: List<Event> = locations.map { l -> Event(GeoPoint("", BigDecimal(10), BigDecimal(10)), Date(), 10)}
 
+    }
+
+    private fun initTripServiceClient() {
+        val okHttpClient = OkHttpClient().newBuilder()
+                .connectTimeout(100, TimeUnit.SECONDS)
+                .readTimeout(100, TimeUnit.SECONDS)
+                .writeTimeout(100, TimeUnit.SECONDS)
+                .build()
+        val gson = GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create()
+        val restClient = Retrofit.Builder()
+                .baseUrl("https://trip-service.herokuapp.com/api/")
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .client(okHttpClient)
+                .build()
+        tripServiceClient = restClient!!.create(TripServiceClient::class.java!!)
     }
 
 }
