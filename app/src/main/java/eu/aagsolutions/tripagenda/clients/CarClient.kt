@@ -3,17 +3,19 @@ package eu.aagsolutions.tripagenda.clients
 import android.content.Context
 import android.util.Log
 import com.highmobility.hmkit.Command.Command
+import com.highmobility.hmkit.Command.Incoming.IncomingCommand
+import com.highmobility.hmkit.Command.Incoming.VehicleLocation
 import com.highmobility.hmkit.Error.DownloadAccessCertificateError
 import com.highmobility.hmkit.Error.TelematicsError
 import com.highmobility.hmkit.Manager
 import com.highmobility.hmkit.Telematics
-import eu.aagsolutions.tripagenda.SerialHolder
 import eu.aagsolutions.tripagenda.model.GeoPoint
+import java.math.BigDecimal
 
 /**
  * Created by aurelavramescu on 07.09.17.
  */
-class CarClient(val context: Context) {
+class CarClient(context: Context) {
 
     val carManger = Manager.getInstance()
 
@@ -27,18 +29,23 @@ class CarClient(val context: Context) {
                 context
         )
 
+        var done = 0
         carManger.downloadCertificate("1dQWwEnyagGuKZFGWvDf7oTuCaTJT20vZkQcCcqsSHNcoDjtJXBq-0KV46LE1HtExvIYUjh8rqEFdLK41Pu6gxdt4CrG8NmnpHwKQ-Cn6X5Tvxx3mV9mEJXSJYkizq-raQ",
                 object : Manager.DownloadCallback {
                     override fun onDownloaded(serial: ByteArray) {
                         serialCertificate = serial
-                        Log.i("Success", "bolocks")
+                        done = 1
                     }
 
                     override fun onDownloadFailed(error: DownloadAccessCertificateError) {
                         Log.e("Download cert error", error.message)
+                        done = -1
                     }
                 })
-
+        while (done == 0) {}
+        if (done == -1) {
+            throw RuntimeException("Error during certificate download")
+        }
     }
 
     fun setNavDestination(geoPoint: GeoPoint) {
@@ -58,19 +65,39 @@ class CarClient(val context: Context) {
         )
     }
 
-    fun getCarLocation() {
+    fun getCarLocation(): GeoPoint {
+        var geoPoint: GeoPoint? = null
+        val callback = object : Telematics.CommandCallback {
+            var status = 0
+            override fun onCommandResponse(response: ByteArray?) {
+                Log.i("Telematics", "Stop here")
+                val incomingCommand = IncomingCommand.create(response) as VehicleLocation
+                geoPoint = GeoPoint("Vehicle Location",
+                        BigDecimal(incomingCommand.latitude.toString()),
+                        BigDecimal(incomingCommand.longitude.toString()))
+                status = 1
+
+            }
+
+            override fun onCommandFailed(error: TelematicsError?) {
+                Log.e("Telematics", error!!.message)
+                status = -1
+            }
+
+            fun isDone(): Boolean {
+                return status != 0
+            }
+        }
         carManger.telematics.sendCommand(Command.VehicleLocation.getLocation(),
                 serialCertificate,
-                object : Telematics.CommandCallback {
-                    override fun onCommandResponse(response: ByteArray?) {
-
-                    }
-
-                    override fun onCommandFailed(error: TelematicsError?) {
-                        Log.e("Telematics", error!!.message)
-                    }
-                }
+                callback
         )
+        while (!callback.isDone()) {
+
+        }
+
+        return geoPoint!!
+
     }
 
 }
