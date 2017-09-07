@@ -16,17 +16,18 @@ import com.google.android.gms.maps.model.LatLngBounds
 import com.google.gson.GsonBuilder
 import eu.aagsolutions.tripagenda.adapters.PlaceArrayAdapter
 import eu.aagsolutions.tripagenda.clients.TripServiceClient
-import eu.aagsolutions.tripagenda.model.Event
 import eu.aagsolutions.tripagenda.model.GeoPoint
 import kotlinx.android.synthetic.main.activity_agenda.addStop
+import kotlinx.android.synthetic.main.activity_agenda.btnCollectDestinations
 import kotlinx.android.synthetic.main.activity_agenda.btnDate
 import kotlinx.android.synthetic.main.activity_agenda.mainLayout
 import okhttp3.OkHttpClient
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.math.BigDecimal
 import java.util.Calendar
-import java.util.Date
 import java.util.HashSet
 import java.util.concurrent.TimeUnit
 
@@ -57,6 +58,7 @@ class AgendaActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFailedLi
         super.onCreate(savedInstanceState)
 
         initTripServiceClient()
+
         // Init maps
         mGoogleApiClient = GoogleApiClient.Builder(this@AgendaActivity)
                 .addApi(Places.GEO_DATA_API)
@@ -107,6 +109,7 @@ class AgendaActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFailedLi
             }
             locations.add(hiddenInfo)
         }
+        collectDestinations()
 
     }
 
@@ -137,7 +140,30 @@ class AgendaActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFailedLi
     }
 
     private fun collectDestinations() {
-        val agenda: List<Event> = locations.map { l -> Event(GeoPoint("", BigDecimal(10), BigDecimal(10)), Date(), 10)}
+        this.btnCollectDestinations.setOnClickListener {
+            val stopPoints = HashSet<GeoPoint>()
+            val childCount = mainLayout.getChildCount()
+            for (i: Int in 0 until childCount) {
+                val view = mainLayout.getChildAt(i)
+                if (view is LinearLayout) {
+                    val textBox = view.getChildAt(1) as AutoCompleteTextView
+                    stopPoints.add(GeoPoint(textBox.text.toString(), null, null))
+                }
+            }
+            val call = this.tripServiceClient?.buildGeoData("TOADD", "TOADD", stopPoints)
+            call?.enqueue(object : Callback<Set<GeoPoint>> {
+                override fun onResponse(call: Call<Set<GeoPoint>>?, response: Response<Set<GeoPoint>>?) {
+                    response?.body()
+                }
+
+                override fun onFailure(call: Call<Set<GeoPoint>>?, t: Throwable?) {
+                    call?.cancel()
+                }
+
+            })
+
+        }
+
 
     }
 
@@ -150,6 +176,7 @@ class AgendaActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFailedLi
         val gson = GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create()
         val restClient = Retrofit.Builder()
                 .baseUrl("https://trip-service.herokuapp.com/api/")
+                //.baseUrl("http://192.168.0.5:8080/api/")
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .client(okHttpClient)
                 .build()
