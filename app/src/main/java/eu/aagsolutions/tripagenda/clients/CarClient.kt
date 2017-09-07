@@ -17,9 +17,11 @@ import java.math.BigDecimal
  */
 class CarClient(context: Context) {
 
-    val carManger = Manager.getInstance()
+    private val LOG_TAG = "CarClient"
 
-    var serialCertificate: ByteArray? = null
+    private val carManger = Manager.getInstance()
+
+    private var serialCertificate: ByteArray? = null
 
     init {
         carManger.initialize(
@@ -38,7 +40,7 @@ class CarClient(context: Context) {
                     }
 
                     override fun onDownloadFailed(error: DownloadAccessCertificateError) {
-                        Log.e("Download cert error", error.message)
+                        Log.e(LOG_TAG, error.message)
                         done = -1
                     }
                 })
@@ -59,7 +61,7 @@ class CarClient(context: Context) {
                     }
 
                     override fun onCommandFailed(error: TelematicsError?) {
-                        Log.e("Telematics", error!!.message)
+                        Log.e(LOG_TAG, error!!.message)
                     }
                 }
         )
@@ -70,7 +72,7 @@ class CarClient(context: Context) {
         val callback = object : Telematics.CommandCallback {
             var status = 0
             override fun onCommandResponse(response: ByteArray?) {
-                Log.i("Telematics", "Stop here")
+                Log.i(LOG_TAG, "Stop here")
                 val incomingCommand = IncomingCommand.create(response) as VehicleLocation
                 geoPoint = GeoPoint("Vehicle Location",
                         BigDecimal(incomingCommand.latitude.toString()),
@@ -80,7 +82,7 @@ class CarClient(context: Context) {
             }
 
             override fun onCommandFailed(error: TelematicsError?) {
-                Log.e("Telematics", error!!.message)
+                Log.e(LOG_TAG, error!!.message)
                 status = -1
             }
 
