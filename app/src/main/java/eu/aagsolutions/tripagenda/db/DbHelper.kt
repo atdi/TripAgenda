@@ -3,11 +3,20 @@ package eu.aagsolutions.tripagenda.db
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.provider.BaseColumns
 
 /**
  * Created by aurelavramescu on 07.09.17.
  */
-class EventDbHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
+class DbHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
+
+    val SQL_CREATE_ENTRIES =
+    "CREATE TABLE " + EventEntry.TABLE_NAME + " (" +
+            BaseColumns._ID + " INTEGER PRIMARY KEY," +
+            EventEntry.COLUMN_NAME_ADDRESS + " VARCHAR(255)," +
+            EventEntry.COLUMN_NAME_LAT + " DOUBLE," +
+            EventEntry.COLUMN_NAME_LON + " DOUBLE)";
+
     override fun onCreate(db: SQLiteDatabase) {
         db.execSQL("")
     }

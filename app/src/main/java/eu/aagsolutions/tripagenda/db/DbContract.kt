@@ -5,6 +5,10 @@ import android.provider.BaseColumns
 /**
  * Created by aurelavramescu on 07.09.17.
  */
+class DbContract private constructor() {
+
+}
+
 object EventEntry : BaseColumns {
 
     val TABLE_NAME = "event"
