@@ -22,7 +22,7 @@ class DbHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
     private val SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS " + EventEntry.TABLE_NAME
 
     override fun onCreate(db: SQLiteDatabase) {
-        db.execSQL("")
+        db.execSQL(SQL_CREATE_ENTRIES)
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
