@@ -14,8 +14,12 @@ class DbHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
     "CREATE TABLE " + EventEntry.TABLE_NAME + " (" +
             BaseColumns._ID + " INTEGER PRIMARY KEY," +
             EventEntry.COLUMN_NAME_ADDRESS + " VARCHAR(255)," +
-            EventEntry.COLUMN_NAME_LAT + " DOUBLE," +
-            EventEntry.COLUMN_NAME_LON + " DOUBLE)";
+            EventEntry.COLUMN_NAME_LAT + " FLOAT," +
+            EventEntry.COLUMN_NAME_LON + " FLOAT," +
+            EventEntry.COLUMN_NAME_START_TIME + " DATETIME," +
+            EventEntry.COLUMN_NAME_DURATION + " INTEGER)"
+
+    private val SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS " + EventEntry.TABLE_NAME
 
     override fun onCreate(db: SQLiteDatabase) {
         db.execSQL("")
