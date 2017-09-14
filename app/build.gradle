@@ -42,5 +42,6 @@ dependencies {
     compile 'com.google.android.gms:play-services-places:10.2.1'
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
     compile 'com.squareup.retrofit2:converter-gson:2.3.0'
+    compile 'android.arch.persistence.room:runtime:1.0.0-alpha9'
     testCompile 'junit:junit:4.12'
 }
