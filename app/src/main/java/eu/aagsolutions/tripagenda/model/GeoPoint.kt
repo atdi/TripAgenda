@@ -1,5 +1,6 @@
 package eu.aagsolutions.tripagenda.model
 
+import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
 import com.google.gson.annotations.Expose
 import java.math.BigDecimal
@@ -7,6 +8,7 @@ import java.math.BigDecimal
 /**
  * Created by avramesc on 8/25/17.
  */
+@Entity
 class GeoPoint(
         @PrimaryKey
         val id: Int,
