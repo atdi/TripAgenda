@@ -16,6 +16,7 @@ import com.google.android.gms.maps.model.LatLngBounds
 import com.google.gson.GsonBuilder
 import eu.aagsolutions.tripagenda.adapters.PlaceArrayAdapter
 import eu.aagsolutions.tripagenda.clients.TripServiceClient
+import eu.aagsolutions.tripagenda.db.DbHelper
 import eu.aagsolutions.tripagenda.model.GeoPoint
 import kotlinx.android.synthetic.main.activity_agenda.addStop
 import kotlinx.android.synthetic.main.activity_agenda.btnCollectDestinations
@@ -54,9 +55,12 @@ class AgendaActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFailedLi
 
     private var tripServiceClient: TripServiceClient? = null
 
+    private var dbHelper: DbHelper? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        dbHelper = DbHelper(this)
         initTripServiceClient()
 
         // Init maps
