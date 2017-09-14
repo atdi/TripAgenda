@@ -16,7 +16,6 @@ import com.google.android.gms.maps.model.LatLngBounds
 import com.google.gson.GsonBuilder
 import eu.aagsolutions.tripagenda.adapters.PlaceArrayAdapter
 import eu.aagsolutions.tripagenda.clients.TripServiceClient
-import eu.aagsolutions.tripagenda.db.DbHelper
 import eu.aagsolutions.tripagenda.model.GeoPoint
 import kotlinx.android.synthetic.main.activity_agenda.addStop
 import kotlinx.android.synthetic.main.activity_agenda.btnCollectDestinations
@@ -55,12 +54,9 @@ class AgendaActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFailedLi
 
     private var tripServiceClient: TripServiceClient? = null
 
-    private var dbHelper: DbHelper? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        dbHelper = DbHelper(this)
         initTripServiceClient()
 
         // Init maps
@@ -151,7 +147,7 @@ class AgendaActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFailedLi
                 val view = mainLayout.getChildAt(i)
                 if (view is LinearLayout) {
                     val textBox = view.getChildAt(1) as AutoCompleteTextView
-                    stopPoints.add(GeoPoint(textBox.text.toString(), null, null))
+                    stopPoints.add(GeoPoint(1, textBox.text.toString(), null, null))
                 }
             }
             val call = this.tripServiceClient?.buildGeoData("TOADD", "TOADD", stopPoints)
