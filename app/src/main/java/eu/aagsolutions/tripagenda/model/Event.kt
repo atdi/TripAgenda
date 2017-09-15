@@ -15,8 +15,8 @@ import java.util.Date
         childColumns = arrayOf("tripId"),
         onDelete = ForeignKey.CASCADE)))
 data class Event(
-        @PrimaryKey
-        val id: Long,
+        @PrimaryKey(autoGenerate = true)
+        val id: Long?,
         @Embedded(prefix = "loc_")
         val point: GeoPoint,
         val startDateTime: Date,

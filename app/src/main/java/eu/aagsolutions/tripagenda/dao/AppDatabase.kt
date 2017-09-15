@@ -18,13 +18,15 @@ abstract class AppDatabase : RoomDatabase() {
 
     abstract fun eventModel(): EventDao
 
+    abstract fun eventTrip(): TripDao
+
     fun getDatabase(context: Context): AppDatabase? {
         if (INSTANCE == null) {
-            INSTANCE = Room.databaseBuilder(context, AppDatabase::class.java, "trip")
-                    //                    Room.inMemoryDatabaseBuilder(context.getApplicationContext(), AppDatabase.class)
+            INSTANCE = Room.databaseBuilder(context, AppDatabase::class.java, "tripdb")
+                    // Room.inMemoryDatabaseBuilder(context.getApplicationContext(), AppDatabase.class)
                     // To simplify the exercise, allow queries on the main thread.
                     // Don't do this on a real app!
-                    .allowMainThreadQueries()
+                    // .allowMainThreadQueries()
                     .build()
         }
         return INSTANCE

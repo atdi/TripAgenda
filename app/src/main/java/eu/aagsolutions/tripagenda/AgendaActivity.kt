@@ -143,7 +143,7 @@ class AgendaActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFailedLi
         this.btnCollectDestinations.setOnClickListener {
             val stopPoints = HashSet<GeoPoint>()
             val childCount = mainLayout.getChildCount()
-            for (i: Int in 0 until childCount) {
+            for(i: Int in 0 until childCount) {
                 val view = mainLayout.getChildAt(i)
                 if (view is LinearLayout) {
                     val textBox = view.getChildAt(1) as AutoCompleteTextView
