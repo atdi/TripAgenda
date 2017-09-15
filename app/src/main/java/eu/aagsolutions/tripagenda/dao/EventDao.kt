@@ -16,6 +16,9 @@ interface EventDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun save(event: Event)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun saveAll(vararg event: Event)
+
     @Query("select * from event where id = :id")
     fun findById(id: Long): Event
 
