@@ -14,11 +14,12 @@ import eu.aagsolutions.tripagenda.model.Event
 interface EventDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addEvent(event: Event)
+    fun save(event: Event)
 
     @Query("select * from event where id = :id")
     fun findById(id: Long): Event
 
+    @Query("select * from event where tripId = :tripId")
     fun findByTripId(tripId: Long): Set<Event>
 
 }

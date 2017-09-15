@@ -2,6 +2,7 @@ package eu.aagsolutions.tripagenda.model
 
 import android.arch.persistence.room.Embedded
 import android.arch.persistence.room.Entity
+import android.arch.persistence.room.Ignore
 import android.arch.persistence.room.PrimaryKey
 
 /**
@@ -15,4 +16,5 @@ data class Trip(
         val startPoint: GeoPoint,
         @Embedded(prefix = "eloc_")
         val endPoint: GeoPoint,
-        val events: Set<Event>)
+        @Ignore
+        val events: Set<Event>?)
