@@ -14,7 +14,7 @@ class TripService(val tripDao: TripDao, val eventDao: EventDao) {
     }
 
     fun save(trip: Trip): Trip {
-        //eventDao.saveAll(trip.events.)
+        eventDao.saveAll(*trip.events.toTypedArray())
         tripDao.save(trip)
         return trip
     }
