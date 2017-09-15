@@ -147,7 +147,7 @@ class AgendaActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFailedLi
                 val view = mainLayout.getChildAt(i)
                 if (view is LinearLayout) {
                     val textBox = view.getChildAt(1) as AutoCompleteTextView
-                    stopPoints.add(GeoPoint(1, textBox.text.toString(), null, null))
+                    stopPoints.add(GeoPoint(textBox.text.toString(), null, null))
                 }
             }
             val call = this.tripServiceClient?.buildGeoData("TOADD", "TOADD", stopPoints)

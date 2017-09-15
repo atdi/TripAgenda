@@ -19,6 +19,6 @@ interface EventDao {
     @Query("select * from event where id = :id")
     fun findById(id: Long): Event
 
-
+    fun findByTripId(tripId: Long): Set<Event>
 
 }
