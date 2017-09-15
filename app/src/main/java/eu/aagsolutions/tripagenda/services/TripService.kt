@@ -12,4 +12,10 @@ class TripService(val tripDao: TripDao, val eventDao: EventDao) {
     fun findById(id: Long): Trip {
         return tripDao.findById(id)
     }
+
+    fun save(trip: Trip): Trip {
+        //eventDao.saveAll(trip.events.)
+        tripDao.save(trip)
+        return trip
+    }
 }
