@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.widget.AutoCompleteTextView
+import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.Toast
@@ -16,7 +17,10 @@ import com.google.android.gms.maps.model.LatLngBounds
 import com.google.gson.GsonBuilder
 import eu.aagsolutions.tripagenda.adapters.PlaceArrayAdapter
 import eu.aagsolutions.tripagenda.clients.TripServiceClient
+import eu.aagsolutions.tripagenda.dao.AppDatabase
+import eu.aagsolutions.tripagenda.model.Event
 import eu.aagsolutions.tripagenda.model.GeoPoint
+import eu.aagsolutions.tripagenda.model.Trip
 import kotlinx.android.synthetic.main.activity_agenda.addStop
 import kotlinx.android.synthetic.main.activity_agenda.btnCollectDestinations
 import kotlinx.android.synthetic.main.activity_agenda.btnDate
@@ -53,6 +57,8 @@ class AgendaActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFailedLi
     private val locations = HashSet<LinearLayout>()
 
     private var tripServiceClient: TripServiceClient? = null
+
+    private val db: AppDatabase? = AppDatabase.getDatabase(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -141,22 +147,37 @@ class AgendaActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFailedLi
 
     private fun collectDestinations() {
         this.btnCollectDestinations.setOnClickListener {
-            val stopPoints = HashSet<GeoPoint>()
+            val stopPoints = HashSet<Event>()
             val childCount = mainLayout.getChildCount()
+            val trip = Trip(null,
+                    GeoPoint("Landsberger Allee 171D, 10369, Berlin", null, null),
+                    GeoPoint("Landsberger Allee 171D, 10369, Berlin", null, null), HashSet())
+            db?.tripModel()?.save(trip)
             for(i: Int in 0 until childCount) {
                 val view = mainLayout.getChildAt(i)
                 if (view is LinearLayout) {
                     val textBox = view.getChildAt(1) as AutoCompleteTextView
-                    stopPoints.add(GeoPoint(textBox.text.toString(), null, null))
+                    val point = GeoPoint(textBox.text.toString(), null, null)
+                    val arrTime = view.getChildAt(2) as EditText
+                    val duration = view.getChildAt(3) as EditText
+                    val timeString = arrTime.text.toString().split(":")
+                    startCalendar.set(Calendar.HOUR, Integer.parseInt(timeString[0]))
+                    startCalendar.set(Calendar.MINUTE, Integer.parseInt(timeString[1]))
+                    val event = Event(null, point, startCalendar.time,
+                            Integer.parseInt(duration.text.toString()), trip.id!!)
+                    db!!.eventModel()!!.save(event)
+                    stopPoints.add(event)
                 }
             }
-            val call = this.tripServiceClient?.buildGeoData("TOADD", "TOADD", stopPoints)
-            call?.enqueue(object : Callback<Set<GeoPoint>> {
-                override fun onResponse(call: Call<Set<GeoPoint>>?, response: Response<Set<GeoPoint>>?) {
+
+            trip.events.plus(stopPoints)
+            val call = this.tripServiceClient?.buildGeoData("TOADD", "TOADD", trip)
+            call?.enqueue(object : Callback<Trip> {
+                override fun onResponse(call: Call<Trip>?, response: Response<Trip>?) {
                     response?.body()
                 }
 
-                override fun onFailure(call: Call<Set<GeoPoint>>?, t: Throwable?) {
+                override fun onFailure(call: Call<Trip>?, t: Throwable?) {
                     call?.cancel()
                 }
 

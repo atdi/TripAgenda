@@ -14,25 +14,27 @@ import eu.aagsolutions.tripagenda.model.Trip
 @Database(entities = arrayOf(Trip::class, Event::class), version = 1, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
 
-    private var INSTANCE: AppDatabase? = null
 
     abstract fun eventModel(): EventDao
 
-    abstract fun eventTrip(): TripDao
+    abstract fun tripModel(): TripDao
 
-    fun getDatabase(context: Context): AppDatabase? {
-        if (INSTANCE == null) {
-            INSTANCE = Room.databaseBuilder(context, AppDatabase::class.java, "tripdb")
-                    // Room.inMemoryDatabaseBuilder(context.getApplicationContext(), AppDatabase.class)
-                    // To simplify the exercise, allow queries on the main thread.
-                    // Don't do this on a real app!
-                    // .allowMainThreadQueries()
-                    .build()
+    companion object {
+        private var INSTANCE: AppDatabase? = null
+        fun getDatabase(context: Context): AppDatabase? {
+            if (INSTANCE == null) {
+                INSTANCE = Room.databaseBuilder(context, AppDatabase::class.java, "tripdb")
+                        // Room.inMemoryDatabaseBuilder(context.getApplicationContext(), AppDatabase.class)
+                        // To simplify the exercise, allow queries on the main thread.
+                        // Don't do this on a real app!
+                        .allowMainThreadQueries()
+                        .build()
+            }
+            return INSTANCE
         }
-        return INSTANCE
-    }
 
-    fun destroyInstance() {
-        INSTANCE = null
+        fun destroyInstance() {
+            INSTANCE = null
+        }
     }
 }
