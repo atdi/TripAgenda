@@ -10,7 +10,6 @@ import com.highmobility.hmkit.Error.TelematicsError
 import com.highmobility.hmkit.Manager
 import com.highmobility.hmkit.Telematics
 import eu.aagsolutions.tripagenda.model.GeoPoint
-import java.math.BigDecimal
 
 /**
  * Created by aurelavramescu on 07.09.17.
@@ -75,8 +74,8 @@ class CarClient(context: Context) {
                 Log.i(LOG_TAG, "Stop here")
                 val incomingCommand = IncomingCommand.create(response) as VehicleLocation
                 geoPoint = GeoPoint("Vehicle Location",
-                        BigDecimal(incomingCommand.latitude.toString()),
-                        BigDecimal(incomingCommand.longitude.toString()))
+                        incomingCommand.latitude.toDouble(),
+                        incomingCommand.longitude.toDouble())
                 status = 1
 
             }

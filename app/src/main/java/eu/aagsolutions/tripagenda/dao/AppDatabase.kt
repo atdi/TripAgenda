@@ -3,6 +3,7 @@ package eu.aagsolutions.tripagenda.dao
 import android.arch.persistence.room.Database
 import android.arch.persistence.room.Room
 import android.arch.persistence.room.RoomDatabase
+import android.arch.persistence.room.TypeConverters
 import android.content.Context
 import eu.aagsolutions.tripagenda.model.Event
 import eu.aagsolutions.tripagenda.model.Trip
@@ -12,6 +13,7 @@ import eu.aagsolutions.tripagenda.model.Trip
  * Created by aurelavramescu on 14.09.17.
  */
 @Database(entities = arrayOf(Trip::class, Event::class), version = 1, exportSchema = false)
+@TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
 
 

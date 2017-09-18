@@ -2,6 +2,7 @@ package eu.aagsolutions.tripagenda.model
 
 import android.arch.persistence.room.Embedded
 import android.arch.persistence.room.Entity
+import android.arch.persistence.room.Ignore
 import android.arch.persistence.room.PrimaryKey
 import android.arch.persistence.room.Relation
 import com.google.gson.annotations.Expose
@@ -13,13 +14,17 @@ import com.google.gson.annotations.Expose
 data class Trip(
         @Expose
         @PrimaryKey(autoGenerate = true)
-        val id: Long?,
+        var id: Long?,
         @Expose
         @Embedded(prefix = "sloc_")
-        val startPoint: GeoPoint,
+        var startPoint: GeoPoint,
         @Expose
         @Embedded(prefix = "eloc_")
-        val endPoint: GeoPoint,
-        @Expose
-        @Relation(parentColumn = "id", entityColumn = "tripId")
-        val events: Set<Event> = HashSet())
+        var endPoint: GeoPoint) {
+
+
+    @Expose
+    @Ignore
+    @Relation(parentColumn = "id", entityColumn = "tripId")
+    var events: Set<Event> = HashSet()
+}

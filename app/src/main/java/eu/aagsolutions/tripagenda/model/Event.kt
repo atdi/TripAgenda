@@ -18,13 +18,13 @@ import java.util.Date
 data class Event(
         @Expose
         @PrimaryKey(autoGenerate = true)
-        val id: Long?,
+        var id: Long?,
         @Expose
         @Embedded(prefix = "loc_")
-        val point: GeoPoint,
+        var point: GeoPoint,
         @Expose
-        val startDateTime: Date,
+        var startDateTime: Date,
         @Expose
-        val duration: Int,
+        var duration: Int,
         @Expose
-        val tripId: Long)
+        var tripId: Long)

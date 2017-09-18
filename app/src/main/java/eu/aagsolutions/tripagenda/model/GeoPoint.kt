@@ -1,18 +1,17 @@
 package eu.aagsolutions.tripagenda.model
 
 import com.google.gson.annotations.Expose
-import java.math.BigDecimal
 
 /**
  * Created by avramesc on 8/25/17.
  */
 class GeoPoint(
         @Expose
-        val address: String,
+        var address: String,
         @Expose
-        val lon: BigDecimal?,
+        var lon: Double?,
         @Expose
-        val lat: BigDecimal?) {
+        var lat: Double?) {
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

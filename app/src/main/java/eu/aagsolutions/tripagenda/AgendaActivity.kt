@@ -151,7 +151,7 @@ class AgendaActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFailedLi
             val childCount = mainLayout.getChildCount()
             val trip = Trip(null,
                     GeoPoint("Landsberger Allee 171D, 10369, Berlin", null, null),
-                    GeoPoint("Landsberger Allee 171D, 10369, Berlin", null, null), HashSet())
+                    GeoPoint("Landsberger Allee 171D, 10369, Berlin", null, null))
             db?.tripModel()?.save(trip)
             for(i: Int in 0 until childCount) {
                 val view = mainLayout.getChildAt(i)
