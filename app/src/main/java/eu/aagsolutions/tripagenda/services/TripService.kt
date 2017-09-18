@@ -9,7 +9,7 @@ import eu.aagsolutions.tripagenda.model.Trip
  */
 class TripService(val tripDao: TripDao, val eventDao: EventDao) {
 
-    fun findById(id: Long): Trip {
+    fun findById(id: String): Trip {
         return tripDao.findById(id)
     }
 
