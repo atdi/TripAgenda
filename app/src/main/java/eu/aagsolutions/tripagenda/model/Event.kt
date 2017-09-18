@@ -17,8 +17,8 @@ import java.util.Date
         onDelete = ForeignKey.CASCADE)))
 data class Event(
         @Expose
-        @PrimaryKey(autoGenerate = true)
-        var id: Long?,
+        @PrimaryKey(autoGenerate = false)
+        var id: String,
         @Expose
         @Embedded(prefix = "loc_")
         var point: GeoPoint,
@@ -27,4 +27,4 @@ data class Event(
         @Expose
         var duration: Int,
         @Expose
-        var tripId: Long)
+        var tripId: String)

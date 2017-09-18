@@ -16,5 +16,5 @@ interface TripDao {
     fun save(event: Trip)
 
     @Query("select * from event where id = :id")
-    fun findById(id: Long): Trip
+    fun findById(id: String): Trip
 }

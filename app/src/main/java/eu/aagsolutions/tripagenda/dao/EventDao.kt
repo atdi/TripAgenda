@@ -21,9 +21,9 @@ interface EventDao {
     fun saveAll(vararg event: Event)
 
     @Query("select * from event where id = :id")
-    fun findById(id: Long): Event
+    fun findById(id: String): Event
 
     @Query("select * from event where tripId = :tripId")
-    fun findByTripId(tripId: Long): Cursor
+    fun findByTripId(tripId: String): Cursor
 
 }

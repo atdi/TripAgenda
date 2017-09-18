@@ -33,6 +33,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.Calendar
 import java.util.HashSet
+import java.util.UUID
 import java.util.concurrent.TimeUnit
 
 
@@ -149,7 +150,7 @@ class AgendaActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFailedLi
         this.btnCollectDestinations.setOnClickListener {
             val stopPoints = HashSet<Event>()
             val childCount = mainLayout.getChildCount()
-            val trip = Trip(null,
+            val trip = Trip(UUID.randomUUID().toString(),
                     GeoPoint("Landsberger Allee 171D, 10369, Berlin", null, null),
                     GeoPoint("Landsberger Allee 171D, 10369, Berlin", null, null))
             db?.tripModel()?.save(trip)
@@ -163,7 +164,7 @@ class AgendaActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFailedLi
                     val timeString = arrTime.text.toString().split(":")
                     startCalendar.set(Calendar.HOUR, Integer.parseInt(timeString[0]))
                     startCalendar.set(Calendar.MINUTE, Integer.parseInt(timeString[1]))
-                    val event = Event(null, point, startCalendar.time,
+                    val event = Event(UUID.randomUUID().toString(), point, startCalendar.time,
                             Integer.parseInt(duration.text.toString()), trip.id!!)
                     db!!.eventModel()!!.save(event)
                     stopPoints.add(event)

@@ -13,8 +13,8 @@ import com.google.gson.annotations.Expose
 @Entity
 data class Trip(
         @Expose
-        @PrimaryKey(autoGenerate = true)
-        var id: Long?,
+        @PrimaryKey(autoGenerate = false)
+        var id: String,
         @Expose
         @Embedded(prefix = "sloc_")
         var startPoint: GeoPoint,
