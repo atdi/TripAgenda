@@ -12,7 +12,7 @@ import eu.aagsolutions.tripagenda.model.Trip
 /**
  * Created by aurelavramescu on 14.09.17.
  */
-@Database(entities = arrayOf(Trip::class, Event::class), version = 1, exportSchema = false)
+@Database(entities = arrayOf(Trip::class, Event::class), version = 2, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
 
