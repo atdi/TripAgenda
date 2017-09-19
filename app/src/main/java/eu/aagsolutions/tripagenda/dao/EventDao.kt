@@ -23,7 +23,7 @@ interface EventDao {
     @Query("select * from event where id = :id")
     fun findById(id: String): Event
 
-    @Query("select * from event where tripId = :tripId")
+    @Query("select * from event where trip_id = :tripId")
     fun findByTripId(tripId: String): Cursor
 
 }

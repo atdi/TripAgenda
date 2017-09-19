@@ -168,7 +168,7 @@ class AgendaActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFailedLi
                     startCalendar.set(Calendar.HOUR, Integer.parseInt(timeString[0]))
                     startCalendar.set(Calendar.MINUTE, Integer.parseInt(timeString[1]))
                     val event = Event(UUID.randomUUID().toString(), point, startCalendar.time,
-                            Integer.parseInt(duration.text.toString()), trip.id!!)
+                            Integer.parseInt(duration.text.toString()), trip.id)
                     tripService!!.saveEvent(event)
                     stopPoints.add(event)
                 }
@@ -206,8 +206,8 @@ class AgendaActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFailedLi
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .client(okHttpClient)
                 .build()
-        tripServiceClient = restClient!!.create(TripServiceClient::class.java!!)
-        tripService = TripService(db!!.tripModel(), db!!.eventModel())
+        tripServiceClient = restClient!!.create(TripServiceClient::class.java)
+        tripService = TripService(db!!.tripModel(), db.eventModel())
     }
 
 }

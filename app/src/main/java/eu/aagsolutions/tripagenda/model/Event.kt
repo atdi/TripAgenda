@@ -1,8 +1,10 @@
 package eu.aagsolutions.tripagenda.model
 
+import android.arch.persistence.room.ColumnInfo
 import android.arch.persistence.room.Embedded
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.ForeignKey
+import android.arch.persistence.room.Index
 import android.arch.persistence.room.PrimaryKey
 import com.google.gson.annotations.Expose
 import java.util.Date
@@ -13,18 +15,21 @@ import java.util.Date
  */
 @Entity(foreignKeys = arrayOf(ForeignKey(entity = Trip::class,
         parentColumns = arrayOf("id"),
-        childColumns = arrayOf("tripId"),
+        childColumns = arrayOf("trip_id"),
         onDelete = ForeignKey.CASCADE)))
 data class Event(
         @Expose
         @PrimaryKey(autoGenerate = false)
-        var id: String,
+        @ColumnInfo(name = "id")
+        val id: String,
         @Expose
         @Embedded(prefix = "loc_")
-        var point: GeoPoint,
+        val point: GeoPoint,
         @Expose
-        var startDateTime: Date,
+        @ColumnInfo(name = "start_date_time")
+        val startDateTime: Date,
         @Expose
-        var duration: Int,
+        val duration: Int,
         @Expose
-        var tripId: String)
+        @ColumnInfo(name = "trip_id", index = true)
+        val tripId: String)

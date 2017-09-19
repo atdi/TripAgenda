@@ -7,11 +7,11 @@ import com.google.gson.annotations.Expose
  */
 class GeoPoint(
         @Expose
-        var address: String,
+        val address: String,
         @Expose
-        var lon: Double?,
+        val lon: Double?,
         @Expose
-        var lat: Double?) {
+        val lat: Double?) {
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
