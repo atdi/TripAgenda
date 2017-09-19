@@ -26,7 +26,9 @@ import eu.aagsolutions.tripagenda.services.TripService
 import kotlinx.android.synthetic.main.activity_agenda.addStop
 import kotlinx.android.synthetic.main.activity_agenda.btnCollectDestinations
 import kotlinx.android.synthetic.main.activity_agenda.btnDate
+import kotlinx.android.synthetic.main.activity_agenda.endPoint
 import kotlinx.android.synthetic.main.activity_agenda.mainLayout
+import kotlinx.android.synthetic.main.activity_agenda.startPoint
 import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Callback
@@ -108,6 +110,8 @@ class AgendaActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFailedLi
             datePickerDialog.show()
         }
 
+        setupAutocompleteTextView(this.startPoint, mLocAutocomplete)
+        setupAutocompleteTextView(this.endPoint, mLocAutocomplete)
         this.addStop.setOnClickListener {
             val hiddenInfo: LinearLayout = layoutInflater.inflate(R.layout.hidden, mainLayout, false) as LinearLayout
             mainLayout.addView(hiddenInfo)
@@ -154,13 +158,13 @@ class AgendaActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFailedLi
             val stopPoints = HashSet<Event>()
             val childCount = mainLayout.getChildCount()
             val trip = Trip(UUID.randomUUID().toString(),
-                    GeoPoint("Landsberger Allee 171D, 10369, Berlin", null, null),
-                    GeoPoint("Landsberger Allee 171D, 10369, Berlin", null, null),
+                    GeoPoint(this.startPoint.text.toString(), null, null),
+                    GeoPoint(this.endPoint.text.toString(), null, null),
                     startCalendar.time)
             tripService!!.saveTrip(trip)
             for (i: Int in 0 until childCount) {
                 val view = mainLayout.getChildAt(i)
-                if (view is LinearLayout) {
+                if (view is LinearLayout && view.childCount == 5) {
                     val textBox = view.getChildAt(1) as AutoCompleteTextView
                     val point = GeoPoint(textBox.text.toString(), null, null)
                     val arrTime = view.getChildAt(2) as EditText

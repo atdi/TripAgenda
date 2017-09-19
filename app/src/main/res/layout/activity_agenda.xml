@@ -1,37 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="eu.aagsolutions.tripagenda.AgendaActivity">
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context="eu.aagsolutions.tripagenda.AgendaActivity">
 
     <LinearLayout
         android:id="@+id/mainLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
         <Button
             android:id="@+id/btnDate"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="1dp"
             android:background="@color/colorPrimary"
             android:textColor="@android:color/white"
-            android:layout_margin="1dp"
-            android:textStyle="bold"
             android:textSize="16sp"
+            android:textStyle="bold"
             />
+
         <Button
             android:id="@+id/addStop"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
-            android:textColor="@android:color/white"
             android:layout_margin="1dp"
-            android:textStyle="bold"
-            android:textSize="16sp"
+            android:background="@color/colorPrimary"
             android:text="Add Stop"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:textStyle="bold"
             />
+
+        <LinearLayout
+            android:id="@+id/linearLayoutStarPoint"
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:layout_margin="0dp"
+            android:background="@color/colorPrimary"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="@color/colorPrimary"
+                android:gravity="left"
+                android:src="@drawable/ic_place_white_24dp"
+                app:layout_widthPercent="5%"/>
+
+            <AutoCompleteTextView
+                android:id="@+id/startPoint"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="4"
+                android:hint="Start Address"
+                android:inputType="text"
+                android:maxLines="1"
+                android:tag="Destination"
+                android:textColor="@android:color/white"
+                android:textColorHint="@android:color/white"
+                android:textColorLink="@android:color/white"
+                android:textCursorDrawable="@null"
+                app:layout_widthPercent="95%"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/linearLayoutEndPoint"
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:layout_margin="0dp"
+            android:background="@color/colorPrimary"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="@color/colorPrimary"
+                android:gravity="left"
+                android:src="@drawable/ic_place_white_24dp"
+                app:layout_widthPercent="5%"/>
+
+            <AutoCompleteTextView
+                android:id="@+id/endPoint"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="4"
+                android:hint="End Address"
+                android:inputType="text"
+                android:maxLines="1"
+                android:tag="Destination"
+                android:textColor="@android:color/white"
+                android:textColorHint="@android:color/white"
+                android:textColorLink="@android:color/white"
+                android:textCursorDrawable="@null"
+                app:layout_widthPercent="95%"/>
+        </LinearLayout>
     </LinearLayout>
 
     <Button
