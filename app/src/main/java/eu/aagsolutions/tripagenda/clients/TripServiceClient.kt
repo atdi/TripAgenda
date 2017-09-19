@@ -2,6 +2,7 @@ package eu.aagsolutions.tripagenda.clients
 
 import eu.aagsolutions.tripagenda.model.GeoPoint
 import eu.aagsolutions.tripagenda.model.Trip
+import eu.aagsolutions.tripagenda.model.TripVO
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -22,7 +23,7 @@ interface TripServiceClient {
     @POST("geo/coding/trip")
     fun buildGeoData(@Header("X-Tenant-Name") tenantId: String,
                      @Header("X-Tenant-Key") tenantKey: String,
-                     @Body trip: Trip): Call<Trip>
+                     @Body trip: TripVO): Call<TripVO>
 
     @GET("geo/coding")
     fun buildGeoData(@Header("X-Tenant-Name") tenantId: String,

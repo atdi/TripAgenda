@@ -21,6 +21,7 @@ import eu.aagsolutions.tripagenda.dao.AppDatabase
 import eu.aagsolutions.tripagenda.model.Event
 import eu.aagsolutions.tripagenda.model.GeoPoint
 import eu.aagsolutions.tripagenda.model.Trip
+import eu.aagsolutions.tripagenda.model.TripVO
 import eu.aagsolutions.tripagenda.services.TripService
 import kotlinx.android.synthetic.main.activity_agenda.addStop
 import kotlinx.android.synthetic.main.activity_agenda.btnCollectDestinations
@@ -157,7 +158,7 @@ class AgendaActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFailedLi
                     GeoPoint("Landsberger Allee 171D, 10369, Berlin", null, null),
                     startCalendar.time)
             tripService!!.saveTrip(trip)
-            for(i: Int in 0 until childCount) {
+            for (i: Int in 0 until childCount) {
                 val view = mainLayout.getChildAt(i)
                 if (view is LinearLayout) {
                     val textBox = view.getChildAt(1) as AutoCompleteTextView
@@ -174,15 +175,23 @@ class AgendaActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFailedLi
                 }
             }
 
-            trip.events.plus(stopPoints)
-            val call = this.tripServiceClient?.buildGeoData("TOADD", "TOADD", trip)
-            call?.enqueue(object : Callback<Trip> {
-                override fun onResponse(call: Call<Trip>?, response: Response<Trip>?) {
-                    val updatedTrip = response?.body()
-                    tripService!!.update(updatedTrip!!)
+            val call = this.tripServiceClient?.buildGeoData("TOADD", "TOADD", TripVO(trip.id,
+                    trip.startPoint,
+                    trip.endPoint,
+                    trip.startDate,
+                    stopPoints))
+            call?.enqueue(object : Callback<TripVO> {
+                override fun onResponse(call: Call<TripVO>?, response: Response<TripVO>?) {
+                    val tripVO = response?.body()!!
+                    val updatedTrip = Trip(tripVO.id,
+                            tripVO.startPoint,
+                            tripVO.endPoint,
+                            tripVO.startDate)
+                    updatedTrip.events = tripVO.events
+                    tripService!!.update(updatedTrip)
                 }
 
-                override fun onFailure(call: Call<Trip>?, t: Throwable?) {
+                override fun onFailure(call: Call<TripVO>?, t: Throwable?) {
                     call?.cancel()
                 }
 
@@ -201,8 +210,9 @@ class AgendaActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFailedLi
                 .build()
         val gson = GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create()
         val restClient = Retrofit.Builder()
-                .baseUrl("https://trip-service.herokuapp.com/api/")
+                //.baseUrl("https://trip-service.herokuapp.com/api/")
                 //.baseUrl("http://192.168.0.5:8080/api/")
+                .baseUrl("http://10.111.9.63:8080/api/")
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .client(okHttpClient)
                 .build()
