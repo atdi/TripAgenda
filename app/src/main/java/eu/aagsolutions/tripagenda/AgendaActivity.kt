@@ -156,7 +156,7 @@ class AgendaActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFailedLi
             val trip = Trip(UUID.randomUUID().toString(),
                     GeoPoint("Landsberger Allee 171D, 10369, Berlin", null, null),
                     GeoPoint("Landsberger Allee 171D, 10369, Berlin", null, null))
-            db?.tripModel()?.save(trip)
+            tripService!!.saveTrip(trip)
             for(i: Int in 0 until childCount) {
                 val view = mainLayout.getChildAt(i)
                 if (view is LinearLayout) {
@@ -169,7 +169,7 @@ class AgendaActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFailedLi
                     startCalendar.set(Calendar.MINUTE, Integer.parseInt(timeString[1]))
                     val event = Event(UUID.randomUUID().toString(), point, startCalendar.time,
                             Integer.parseInt(duration.text.toString()), trip.id!!)
-                    db!!.eventModel()!!.save(event)
+                    tripService!!.saveEvent(event)
                     stopPoints.add(event)
                 }
             }
@@ -179,8 +179,7 @@ class AgendaActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFailedLi
             call?.enqueue(object : Callback<Trip> {
                 override fun onResponse(call: Call<Trip>?, response: Response<Trip>?) {
                     val updatedTrip = response?.body()
-                    db!!.eventModel().saveAll(*updatedTrip!!.events.toTypedArray())
-                    db!!.tripModel().save(updatedTrip!!)
+                    tripService!!.update(updatedTrip!!)
                 }
 
                 override fun onFailure(call: Call<Trip>?, t: Throwable?) {
