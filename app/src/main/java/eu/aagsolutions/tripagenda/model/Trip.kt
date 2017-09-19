@@ -7,6 +7,7 @@ import android.arch.persistence.room.Ignore
 import android.arch.persistence.room.PrimaryKey
 import android.arch.persistence.room.Relation
 import com.google.gson.annotations.Expose
+import java.util.Date
 
 /**
  * Created by aurelavramescu on 06.09.17.
@@ -22,7 +23,10 @@ data class Trip(
         val startPoint: GeoPoint,
         @Expose
         @Embedded(prefix = "eloc_")
-        val endPoint: GeoPoint) {
+        val endPoint: GeoPoint,
+        @Expose
+        @ColumnInfo(name = "start_date")
+        val startDate: Date) {
 
 
     @Expose

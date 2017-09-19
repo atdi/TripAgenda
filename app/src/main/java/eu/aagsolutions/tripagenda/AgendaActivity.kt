@@ -33,6 +33,7 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.Calendar
+import java.util.Date
 import java.util.HashSet
 import java.util.UUID
 import java.util.concurrent.TimeUnit
@@ -155,7 +156,8 @@ class AgendaActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFailedLi
             val childCount = mainLayout.getChildCount()
             val trip = Trip(UUID.randomUUID().toString(),
                     GeoPoint("Landsberger Allee 171D, 10369, Berlin", null, null),
-                    GeoPoint("Landsberger Allee 171D, 10369, Berlin", null, null))
+                    GeoPoint("Landsberger Allee 171D, 10369, Berlin", null, null),
+                    Date())
             tripService!!.saveTrip(trip)
             for(i: Int in 0 until childCount) {
                 val view = mainLayout.getChildAt(i)
