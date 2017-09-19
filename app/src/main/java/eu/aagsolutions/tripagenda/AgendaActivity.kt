@@ -21,6 +21,7 @@ import eu.aagsolutions.tripagenda.dao.AppDatabase
 import eu.aagsolutions.tripagenda.model.Event
 import eu.aagsolutions.tripagenda.model.GeoPoint
 import eu.aagsolutions.tripagenda.model.Trip
+import eu.aagsolutions.tripagenda.services.TripService
 import kotlinx.android.synthetic.main.activity_agenda.addStop
 import kotlinx.android.synthetic.main.activity_agenda.btnCollectDestinations
 import kotlinx.android.synthetic.main.activity_agenda.btnDate
@@ -61,10 +62,12 @@ class AgendaActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFailedLi
 
     private val db: AppDatabase? = AppDatabase.getDatabase(this)
 
+    private var tripService: TripService? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        initTripServiceClient()
+        initTripServices()
 
         // Init maps
         mGoogleApiClient = GoogleApiClient.Builder(this@AgendaActivity)
@@ -175,7 +178,9 @@ class AgendaActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFailedLi
             val call = this.tripServiceClient?.buildGeoData("TOADD", "TOADD", trip)
             call?.enqueue(object : Callback<Trip> {
                 override fun onResponse(call: Call<Trip>?, response: Response<Trip>?) {
-                    response?.body()
+                    val updatedTrip = response?.body()
+                    db!!.eventModel().saveAll(*updatedTrip!!.events.toTypedArray())
+                    db!!.tripModel().save(updatedTrip!!)
                 }
 
                 override fun onFailure(call: Call<Trip>?, t: Throwable?) {
@@ -189,7 +194,7 @@ class AgendaActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFailedLi
 
     }
 
-    private fun initTripServiceClient() {
+    private fun initTripServices() {
         val okHttpClient = OkHttpClient().newBuilder()
                 .connectTimeout(100, TimeUnit.SECONDS)
                 .readTimeout(100, TimeUnit.SECONDS)
@@ -203,6 +208,7 @@ class AgendaActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFailedLi
                 .client(okHttpClient)
                 .build()
         tripServiceClient = restClient!!.create(TripServiceClient::class.java!!)
+        tripService = TripService(db!!.tripModel(), db!!.eventModel())
     }
 
 }
