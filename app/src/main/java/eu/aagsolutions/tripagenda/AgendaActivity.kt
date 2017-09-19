@@ -157,7 +157,7 @@ class AgendaActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFailedLi
             val trip = Trip(UUID.randomUUID().toString(),
                     GeoPoint("Landsberger Allee 171D, 10369, Berlin", null, null),
                     GeoPoint("Landsberger Allee 171D, 10369, Berlin", null, null),
-                    Date())
+                    startCalendar.time)
             tripService!!.saveTrip(trip)
             for(i: Int in 0 until childCount) {
                 val view = mainLayout.getChildAt(i)
