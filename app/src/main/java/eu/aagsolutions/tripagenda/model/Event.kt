@@ -32,4 +32,7 @@ data class Event(
         val duration: Int,
         @Expose
         @ColumnInfo(name = "trip_id", index = true)
-        val tripId: String)
+        val tripId: String) {
+    @ColumnInfo(name = "passed")
+    var passed = false
+}

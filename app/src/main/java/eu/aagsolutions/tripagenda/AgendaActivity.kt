@@ -1,6 +1,7 @@
 package eu.aagsolutions.tripagenda
 
 import android.app.DatePickerDialog
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
@@ -154,6 +155,7 @@ class AgendaActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFailedLi
     }
 
     private fun collectDestinations() {
+        val intent = Intent(this, TripViewActivity::class.java)
         this.btnCollectDestinations.setOnClickListener {
             val stopPoints = HashSet<Event>()
             val childCount = mainLayout.getChildCount()
@@ -193,6 +195,8 @@ class AgendaActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFailedLi
                             tripVO.startDate)
                     updatedTrip.events = tripVO.events
                     tripService!!.update(updatedTrip)
+                    intent.putExtra("tripId", updatedTrip.id)
+                    startActivity(intent)
                 }
 
                 override fun onFailure(call: Call<TripVO>?, t: Throwable?) {
