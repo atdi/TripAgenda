@@ -1,5 +1,6 @@
 package eu.aagsolutions.tripagenda.services
 
+import eu.aagsolutions.tripagenda.dao.AppDatabase
 import eu.aagsolutions.tripagenda.dao.EventDao
 import eu.aagsolutions.tripagenda.dao.TripDao
 import eu.aagsolutions.tripagenda.model.Event
@@ -9,6 +10,8 @@ import eu.aagsolutions.tripagenda.model.Trip
  * Created by avramesc on 9/15/17.
  */
 class TripService(val tripDao: TripDao, val eventDao: EventDao) {
+
+    constructor(db: AppDatabase) : this(db.tripModel(), db.eventModel())
 
     fun findById(id: String): Trip {
         return tripDao.findById(id)

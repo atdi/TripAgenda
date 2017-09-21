@@ -15,6 +15,6 @@ interface TripDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun save(event: Trip)
 
-    @Query("select * from event where id = :id")
+    @Query("select * from trip where id = :id")
     fun findById(id: String): Trip
 }

@@ -6,4 +6,11 @@
                 android:layout_height="match_parent"
     tools:context="eu.aagsolutions.tripagenda.TripViewActivity">
 
+    <ListView
+        android:id="@+id/eventsList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="13dp"/>
 </RelativeLayout>
