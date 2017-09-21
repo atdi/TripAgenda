@@ -4,7 +4,6 @@ import android.arch.persistence.room.Dao
 import android.arch.persistence.room.Insert
 import android.arch.persistence.room.OnConflictStrategy
 import android.arch.persistence.room.Query
-import android.database.Cursor
 import eu.aagsolutions.tripagenda.model.Event
 
 
@@ -24,6 +23,6 @@ interface EventDao {
     fun findById(id: String): Event
 
     @Query("select * from event where trip_id = :tripId")
-    fun findByTripId(tripId: String): Cursor
+    fun findByTripId(tripId: String): List<Event>
 
 }

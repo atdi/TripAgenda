@@ -17,6 +17,10 @@ class TripService(val tripDao: TripDao, val eventDao: EventDao) {
         return tripDao.findById(id)
     }
 
+    fun findEventsByTripId(id: String): List<Event> {
+        return eventDao.findByTripId(id)
+    }
+
     fun update(trip: Trip) {
         eventDao.saveAll(*trip.events.toTypedArray())
         tripDao.save(trip)

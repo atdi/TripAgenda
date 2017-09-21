@@ -21,7 +21,8 @@ class TripViewActivity : AppCompatActivity() {
         setContentView(R.layout.activity_trip_view)
         val tripId = intent.getSerializableExtra("tripId") as String
         val trip = tripService.findById(tripId)
-        trip.events.forEach { e ->  arrayList.add(e.point.address) }
+        val events = tripService.findEventsByTripId(tripId)
+        events.forEach { e ->  arrayList.add(e.point.address) }
         adapter = ArrayAdapter(applicationContext, android.R.layout.simple_spinner_item, arrayList)
         eventsList.adapter = adapter
 
