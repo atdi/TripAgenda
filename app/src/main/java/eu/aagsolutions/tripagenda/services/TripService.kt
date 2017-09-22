@@ -22,7 +22,7 @@ class TripService(val tripDao: TripDao, val eventDao: EventDao) {
     }
 
     fun update(trip: Trip) {
-        eventDao.saveAll(*trip.events.toTypedArray())
+        trip.events.forEach { e -> eventDao.save(e) }
         tripDao.save(trip)
     }
 
