@@ -13,4 +13,13 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginTop="13dp"/>
+
+    <Button
+        android:id="@+id/startPlanner"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/eventsList"
+        android:layout_marginTop="-50dp"
+        android:text="Plan my day"/>
+
 </RelativeLayout>
