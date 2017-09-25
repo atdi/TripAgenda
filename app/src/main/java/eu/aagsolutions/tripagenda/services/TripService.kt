@@ -22,8 +22,8 @@ class TripService(val tripDao: TripDao, val eventDao: EventDao) {
     }
 
     fun update(trip: Trip) {
-        trip.events.forEach { e -> eventDao.save(e) }
         tripDao.save(trip)
+        trip.events.forEach { e -> eventDao.save(e) }
     }
 
     fun saveTrip(trip: Trip) {
