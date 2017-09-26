@@ -27,7 +27,7 @@ class TripViewActivity : AppCompatActivity() {
         events.forEach { e ->
             run {
                 val dateTime = SimpleDateFormat("dd/MM/yy hh:mm").format(e.startDateTime)
-                arrayList.add(String.format("%s %s", e.point.address, dateTime))
+                arrayList.add(String.format("%s %s %s", e.point.address, dateTime, if (e.passed) "Yes" else "No"))
             }
         }
         arrayList.add(trip.endPoint.address)
