@@ -21,7 +21,7 @@ class StartJobReceiver: BroadcastReceiver() {
         builder.setOverrideDeadline((3 * 1000).toLong()) // maximum delay
         //builder.setRequiredNetworkType(JobInfo.NETWORK_TYPE_UNMETERED); // require unmetered network
         //builder.setRequiresDeviceIdle(true); // device should be idle
-        //builder.setRequiresCharging(false); // we don't care if the device is charging or not
+        builder.setRequiresCharging(false); // we don't care if the device is charging or not
         val jobScheduler = context?.getSystemService(JobScheduler::class.java)
         jobScheduler?.schedule(builder.build())
     }

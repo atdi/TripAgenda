@@ -25,4 +25,7 @@ interface EventDao {
     @Query("select * from event where trip_id = :tripId")
     fun findByTripId(tripId: String): List<Event>
 
+    @Query("select * from event where start_date_time > :dateTime limit 1")
+    fun findNextEvent(dateTime: Long): Event
+
 }

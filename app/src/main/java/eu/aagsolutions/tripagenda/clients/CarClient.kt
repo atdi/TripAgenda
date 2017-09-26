@@ -56,7 +56,7 @@ class CarClient(context: Context) {
                 serialCertificate,
                 object : Telematics.CommandCallback {
                     override fun onCommandResponse(response: ByteArray?) {
-
+                        Log.i(LOG_TAG, "Nav destination has been set")
                     }
 
                     override fun onCommandFailed(error: TelematicsError?) {

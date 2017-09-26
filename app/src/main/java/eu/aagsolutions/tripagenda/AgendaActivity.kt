@@ -2,6 +2,7 @@ package eu.aagsolutions.tripagenda
 
 import android.app.DatePickerDialog
 import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
@@ -19,6 +20,7 @@ import com.google.gson.GsonBuilder
 import eu.aagsolutions.tripagenda.adapters.PlaceArrayAdapter
 import eu.aagsolutions.tripagenda.clients.TripServiceClient
 import eu.aagsolutions.tripagenda.dao.AppDatabase
+import eu.aagsolutions.tripagenda.jobs.StartJobReceiver
 import eu.aagsolutions.tripagenda.model.Event
 import eu.aagsolutions.tripagenda.model.GeoPoint
 import eu.aagsolutions.tripagenda.model.Trip
@@ -69,9 +71,18 @@ class AgendaActivity : AppCompatActivity(), GoogleApiClient.OnConnectionFailedLi
 
     private var tripService: TripService? = null
 
+    private val jobReceiver = StartJobReceiver()
+
+    private val filter = IntentFilter()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        filter.addAction("android.intent.action.ACTION_BOOT_COMPLETED")
+        application.registerReceiver(jobReceiver, filter)
+
+        val intent = Intent("android.intent.action.ACTION_BOOT_COMPLETED")
+        sendBroadcast(intent)
         initTripServices()
 
         // Init maps
