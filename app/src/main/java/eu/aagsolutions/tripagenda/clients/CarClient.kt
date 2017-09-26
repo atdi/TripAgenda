@@ -31,7 +31,7 @@ class CarClient(context: Context) {
         )
 
         var done = 0
-        carManger.downloadCertificate("1dQWwEnyagGuKZFGWvDf7oTuCaTJT20vZkQcCcqsSHNcoDjtJXBq-0KV46LE1HtExvIYUjh8rqEFdLK41Pu6gxdt4CrG8NmnpHwKQ-Cn6X5Tvxx3mV9mEJXSJYkizq-raQ",
+        carManger.downloadCertificate("G8969CLuNYQd1oUmIcIEwwsdRKKRQ8eotShgHTHuSxp8ykLm2X1uNcPcx12pI_YX8XvXGe5eVwlTTvM7Fa-XwZXgLI2ubSRM_UpgwpYrzin3wSXnZbOUlbMQju6Wi4vO0g",
                 object : Manager.DownloadCallback {
                     override fun onDownloaded(serial: ByteArray) {
                         serialCertificate = serial

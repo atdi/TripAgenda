@@ -37,4 +37,8 @@ class TripService(val tripDao: TripDao, val eventDao: EventDao) {
     fun saveEvent(event: Event) {
         eventDao.save(event)
     }
+
+    fun nextEvent(dateTime: Long): Event {
+        return eventDao.findNextEvent(dateTime)
+    }
 }
