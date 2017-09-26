@@ -9,9 +9,7 @@ import eu.aagsolutions.tripagenda.services.TripService
 import android.graphics.Bitmap
 
 
-
-
-class TripPlannerJob: JobService() {
+class TripPlannerJob : JobService() {
 
     private val LOG_TAG = "TripPlannerJob"
 
@@ -28,14 +26,15 @@ class TripPlannerJob: JobService() {
             val carClient = CarClient(this)
             val event = tripService.nextEvent(System.currentTimeMillis())
             if (event != null && !event.passed) {
-                carClient.setNavDestination(event.point)
-                event.passed = true
-                tripService.saveEvent(event)
+                val success = carClient.setNavDestination(event.point)
+                if (success) {
+                    event.passed = true
+                    tripService.saveEvent(event)
+                }
             }
         }).start()
         return true
     }
-
 
 
 }

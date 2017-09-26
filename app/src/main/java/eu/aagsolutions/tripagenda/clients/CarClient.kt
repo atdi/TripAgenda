@@ -49,26 +49,41 @@ class CarClient(context: Context) {
         }
     }
 
-    fun setNavDestination(geoPoint: GeoPoint) {
+    fun setNavDestination(geoPoint: GeoPoint): Boolean {
+        val callback = object : Telematics.CommandCallback {
+            @Volatile
+            var status = 0
+            override fun onCommandResponse(response: ByteArray?) {
+                Log.i(LOG_TAG, "Nav destination has been set")
+                status = 1
+            }
+
+            override fun onCommandFailed(error: TelematicsError?) {
+                Log.e(LOG_TAG, error!!.message)
+                status = -1
+            }
+
+            fun isDone(): Boolean {
+                return status != 0
+            }
+        }
         carManger.telematics.sendCommand(Command.NaviDestination.setDestination(
                 geoPoint.lat!!.toFloat(),
                 geoPoint.lon!!.toFloat(), geoPoint.address),
                 serialCertificate,
-                object : Telematics.CommandCallback {
-                    override fun onCommandResponse(response: ByteArray?) {
-                        Log.i(LOG_TAG, "Nav destination has been set")
-                    }
-
-                    override fun onCommandFailed(error: TelematicsError?) {
-                        Log.e(LOG_TAG, error!!.message)
-                    }
-                }
+                callback
         )
+        while (!callback.isDone()) {
+
+        }
+
+        return callback.status == 1
     }
 
     fun getCarLocation(): GeoPoint {
         var geoPoint: GeoPoint? = null
         val callback = object : Telematics.CommandCallback {
+            @Volatile
             var status = 0
             override fun onCommandResponse(response: ByteArray?) {
                 Log.i(LOG_TAG, "Stop here")
