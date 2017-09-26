@@ -27,8 +27,10 @@ class TripPlannerJob: JobService() {
             Log.i(LOG_TAG, "Job is started")
             val carClient = CarClient(this)
             val event = tripService.nextEvent(System.currentTimeMillis())
-            if (event != null) {
+            if (event != null && !event.passed) {
                 carClient.setNavDestination(event.point)
+                event.passed = true
+                tripService.saveEvent(event)
             }
         }).start()
         return true
